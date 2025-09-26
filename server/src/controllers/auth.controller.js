@@ -4,19 +4,24 @@ const { uploadImageBuffer } = require("../services/upload.service.js");
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
+
+    if (!name || !email || !password)
+      return res.status(400).json({ message: "All fields are required" });
 
     const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    if (existingUser)
       return res.status(400).json({ message: "User already exists" });
-    }
 
-    let imageUrl = "";
+    let profile_picture = "";
     if (req.file) {
-      imageUrl = await uploadImageBuffer(req.file.buffer, "profile_pictures");
+      profile_picture = await uploadImageBuffer(
+        req.file.buffer,
+        "profile_pictures"
+      );
     }
 
-    const user = new User({ name, email, password, profile_picture: imageUrl });
+    const user = new User({ name, email, password, profile_picture, role });
     await user.save();
 
     const token = authService.generateToken(user);
@@ -26,12 +31,13 @@ exports.register = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
         profile_picture: user.profile_picture,
       },
       token,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
