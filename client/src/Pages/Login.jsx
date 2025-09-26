@@ -12,6 +12,7 @@ export default function Login() {
     try {
       const res = await loginUser(email, password);
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user)); 
       navigate("/admin");
     } catch (err) {
       console.error(err);
@@ -22,7 +23,9 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-900">
       <div className="bg-slate-800 p-8 rounded-xl shadow-lg w-full max-w-md -mt-10">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">Login</h2>
+        <h2 className="text-2xl font-bold text-white mb-6 text-center">
+          Login
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-gray-300 mb-1">Email</label>
