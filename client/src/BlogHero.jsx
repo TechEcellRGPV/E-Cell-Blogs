@@ -1,3 +1,4 @@
+import BlogGrid from "./BlogGrid";
 import BlogPostCard from "./BlogPostCard";
 
 export default function BlogHero() {
@@ -32,9 +33,9 @@ export default function BlogHero() {
       </section>
 
       {/* Blog Posts Section */}
-      <section className="bg-white py-16 px-6 md:px-20">
+      <section className="">
         <div className="max-w-7xl mx-auto">
-          <BlogPostCard />
+          <BlogGrid />
         </div>
       </section>
     </>

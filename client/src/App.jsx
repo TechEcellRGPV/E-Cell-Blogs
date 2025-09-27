@@ -7,6 +7,7 @@ import Footer from './Footer';
 import Login from './Pages/Login';
 import BlogPage from './Blog_detail';
 import AdminPanel from './Pages/AdminPanel';
+import BlogDetail from './Blog_detail';
 
 
 const PrivateRoute = ({ children }) => {
@@ -21,7 +22,7 @@ function App() {
       <Routes>
         <Route path="/Login" element={<Login />} />
         <Route path="/" element={<><BlogHero /></>} />
-        <Route path="/blog_detail" element={<><BlogPage /></>} />
+        <Route path="/blog/:id" element={<BlogDetail />} />
         <Route
           path="/admin"
           element={
