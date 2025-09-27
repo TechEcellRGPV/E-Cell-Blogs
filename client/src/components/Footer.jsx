@@ -1,4 +1,4 @@
-import { Facebook,Instagram,Linkedin } from "lucide-react";
+import { Facebook, Instagram, Linkedin } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -21,14 +21,14 @@ export default function Footer() {
                 alt="E-Cell Logo"
                 className="w-22 h-22 object-contain text-white fill-white"
               />
-              
             </div>
 
             <p className="text-gray-300 text-sm leading-relaxed">
-              Entrepreneurship Cell is a non-profit organisation with the purpose of
-              creating awareness towards the developing entrepreneurial culture and
-              encouraging students to embrace the idea of starting their own venture.
-              We aim to inspire and guide young entrepreneurs and their start-ups.
+              Entrepreneurship Cell is a non-profit organisation with the
+              purpose of creating awareness towards the developing
+              entrepreneurial culture and encouraging students to embrace the
+              idea of starting their own venture. We aim to inspire and guide
+              young entrepreneurs and their start-ups.
             </p>
 
             {/* Social Icons */}
@@ -56,11 +56,23 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="space-y-6">
-            <h3 className="text-blue-400 font-semibold text-lg uppercase tracking-wide">Quick Links</h3>
+            <h3 className="text-blue-400 font-semibold text-lg uppercase tracking-wide">
+              Quick Links
+            </h3>
             <ul className="space-y-3">
-              {["Home", "About us", "Contact us", "Gallery", "Post Events", "CAP"].map((link) => (
+              {[
+                "Home",
+                "About us",
+                "Contact us",
+                "Gallery",
+                "Post Events",
+                "CAP",
+              ].map((link) => (
                 <li key={link}>
-                  <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                  <a
+                    href="#"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
                     {link}
                   </a>
                 </li>
@@ -70,11 +82,22 @@ export default function Footer() {
 
           {/* Spotlight */}
           <div className="space-y-6">
-            <h3 className="text-blue-400 font-semibold text-lg uppercase tracking-wide">Spotlight</h3>
+            <h3 className="text-blue-400 font-semibold text-lg uppercase tracking-wide">
+              Spotlight
+            </h3>
             <ul className="space-y-3">
-              {["SIP", "Startup Incubation", "E-Mentoring", "Skill Development", "Alumni E-Cell RGPV"].map((item) => (
+              {[
+                "SIP",
+                "Startup Incubation",
+                "E-Mentoring",
+                "Skill Development",
+                "Alumni E-Cell RGPV",
+              ].map((item) => (
                 <li key={item}>
-                  <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                  <a
+                    href="#"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
                     {item}
                   </a>
                 </li>
@@ -84,7 +107,9 @@ export default function Footer() {
 
           {/* Contact Us */}
           <div className="space-y-6">
-            <h3 className="text-blue-400 font-semibold text-lg uppercase tracking-wide">Contact Us</h3>
+            <h3 className="text-blue-400 font-semibold text-lg uppercase tracking-wide">
+              Contact Us
+            </h3>
             <div className="space-y-3 text-gray-300 text-sm">
               <p>E-Cell RGPV, Gandhi Nagar, Bhopal</p>
               <p>Phone: +91 8985412487</p>

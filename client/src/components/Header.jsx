@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 export default function Header() {
   const [isInitiativesOpen, setIsInitiativesOpen] = useState(false);
   const [isArchivesOpen, setIsArchivesOpen] = useState(false);
@@ -27,13 +26,12 @@ export default function Header() {
               alt="E-Cell Logo"
               className="w-22 h-20 object-contain text-white fill-white"
             />
-           
           </div>
 
           {/* Navigation Menu */}
           <nav className="hidden lg:flex items-center space-x-1">
             <a
-              href="https://ecellrgpv.com"
+              href="/"
               className="px-6 py-3 text-white font-medium hover:bg-blue-800/50 rounded-lg transition-all duration-200 hover:scale-105"
             >
               Home
@@ -159,11 +157,12 @@ export default function Header() {
           {/* Sign In Button */}
           <div className="flex items-center space-x-4">
             <a href="/login">
-            <button
-            variant="outline" 
-            className="border-2 border-blue-400 text-blue-300 hover:bg-blue-500/20 hover:text-white px-6 py-2 font-medium rounded-full transition-all duration-200 hover:scale-105 bg-transparent">
-              Sign in
-            </button>
+              <button
+                variant="outline"
+                className="border-2 border-blue-400 text-blue-300 hover:bg-blue-500/20 hover:text-white px-6 py-2 font-medium rounded-full transition-all duration-200 hover:scale-105 bg-transparent"
+              >
+                Sign in
+              </button>
             </a>
           </div>
 

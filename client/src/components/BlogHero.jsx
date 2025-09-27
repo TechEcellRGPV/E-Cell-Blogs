@@ -1,5 +1,5 @@
+import React from "react";
 import BlogGrid from "./BlogGrid";
-import BlogPostCard from "./BlogPostCard";
 
 export default function BlogHero() {
   return (
@@ -7,10 +7,10 @@ export default function BlogHero() {
       {/* Hero Section */}
       <section className="bg-[#0a0a2a] text-white py-20 px-6 md:px-20">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Text */}
           <div>
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-6">
-              E-Cell Blogs : <br />
+              E-Cell Blogs
+              <br />
               Empowering <br />
               Tomorrow’s Innovators Today
             </h1>
@@ -20,8 +20,6 @@ export default function BlogHero() {
               innovation and startups.
             </p>
           </div>
-
-          {/* Right Side - Illustration */}
           <div className="flex justify-center md:justify-end">
             <img
               src="/hero.png"
@@ -32,10 +30,11 @@ export default function BlogHero() {
         </div>
       </section>
 
-      {/* Blog Posts Section */}
-      <section className="">
-        <div className="max-w-7xl mx-auto">
-          <BlogGrid />
+      {/* Latest Blogs Section */}
+      <section className="bg-[#0a0a2a] text-white py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-3xl font-bold mb-8">Latest Blogs</h2>
+          <BlogGrid showAll={false} />
         </div>
       </section>
     </>

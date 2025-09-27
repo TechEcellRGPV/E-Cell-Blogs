@@ -1,15 +1,21 @@
+"use client";
 import React, { useEffect, useState } from "react";
-import { fetchBlogs, createBlog, updateBlog, deleteBlog } from "../api/blogs";
+import { fetchBlogs, deleteBlog } from "../api/blogs";
+import AddBlogForm from "../components/BlogForm";
 
 export default function AdminPanel() {
   const [blogs, setBlogs] = useState([]);
-  const [form, setForm] = useState({ title: "", content: "", image: "" });
-  const [editMode, setEditMode] = useState(false);
-  const [editId, setEditId] = useState(null);
+  const [editBlog, setEditBlog] = useState(null);
+  const [notification, setNotification] = useState(null); // success/error messages
 
   useEffect(() => {
     loadBlogs();
   }, []);
+
+  const showNotification = (message, type = "success") => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 3000);
+  };
 
   const loadBlogs = async () => {
     try {
@@ -17,34 +23,7 @@ export default function AdminPanel() {
       setBlogs(res.data);
     } catch (err) {
       console.error(err);
-      alert("Failed to load blogs");
-    }
-  };
-
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleCreate = async () => {
-    if (!form.title || !form.content) return alert("Please fill required fields");
-    try {
-      await createBlog(form);
-      setForm({ title: "", content: "", image: "" });
-      loadBlogs();
-    } catch (err) {
-      console.error(err);
-      alert("Create failed");
-    }
-  };
-
-  const handleUpdate = async () => {
-    try {
-      await updateBlog(editId, form);
-      setForm({ title: "", content: "", image: "" });
-      setEditMode(false);
-      setEditId(null);
-      loadBlogs();
-    } catch (err) {
-      console.error(err);
-      alert("Update failed");
+      showNotification("Failed to load blogs", "error");
     }
   };
 
@@ -52,92 +31,85 @@ export default function AdminPanel() {
     if (!window.confirm("Delete this blog?")) return;
     try {
       await deleteBlog(id);
+      showNotification("Blog deleted successfully");
       loadBlogs();
     } catch (err) {
       console.error(err);
-      alert("Delete failed");
+      showNotification("Delete failed", "error");
     }
   };
 
-  const handleEdit = (blog) => {
-    setForm({ title: blog.title, content: blog.content, image: blog.image });
-    setEditMode(true);
-    setEditId(blog._id || blog.id);
-  };
+  const handleEdit = (blog) => setEditBlog(blog);
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Admin Panel</h2>
+    <div className="p-6 max-w-6xl mx-auto">
+      <h2 className="text-3xl font-bold mb-6 text-gray-800">Admin Panel</h2>
 
-      {/* Form */}
-      <div className="mb-6 space-y-3">
-        <input
-          type="text"
-          name="title"
-          placeholder="Blog Title"
-          value={form.title}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="text"
-          name="image"
-          placeholder="Image URL"
-          value={form.image}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-        />
-        <textarea
-          name="content"
-          placeholder="Blog Content"
-          value={form.content}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-        />
-        {editMode ? (
-          <button
-            onClick={handleUpdate}
-            className="px-4 py-2 bg-blue-600 text-white rounded"
-          >
-            Update Blog
-          </button>
-        ) : (
-          <button
-            onClick={handleCreate}
-            className="px-4 py-2 bg-green-600 text-white rounded"
-          >
-            Create Blog
-          </button>
-        )}
-      </div>
+      {/* Notification */}
+      {notification && (
+        <div
+          className={`mb-4 p-3 rounded ${
+            notification.type === "success"
+              ? "bg-green-100 text-green-800"
+              : "bg-red-100 text-red-800"
+          }`}
+        >
+          {notification.message}
+        </div>
+      )}
 
-      {/* Blog List */}
-      <h3 className="text-xl font-semibold mb-2">All Blogs</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {blogs.map((blog) => (
-          <div
-            key={blog._id || blog.id}
-            className="p-4 border rounded shadow flex flex-col justify-between"
-          >
-            <h4 className="font-bold">{blog.title}</h4>
-            <p className="text-sm text-gray-600">{blog.content.substring(0, 80)}...</p>
-            <div className="mt-3 flex gap-2">
-              <button
-                onClick={() => handleEdit(blog)}
-                className="px-3 py-1 bg-yellow-500 text-white rounded"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDelete(blog._id || blog.id)}
-                className="px-3 py-1 bg-red-600 text-white rounded"
-              >
-                Delete
-              </button>
+      {/* Blog creation / editing form */}
+      <AddBlogForm
+        onBlogCreated={() => {
+          loadBlogs();
+          showNotification(editBlog ? "Blog updated!" : "Blog created!");
+          setEditBlog(null);
+        }}
+        editBlog={editBlog}
+      />
+
+      {/* Blog list */}
+      <h3 className="text-2xl font-semibold mb-4 mt-8 text-gray-700">
+        All Blogs
+      </h3>
+      {blogs.length === 0 ? (
+        <p className="text-gray-500">No blogs available.</p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {blogs.map((blog) => (
+            <div
+              key={blog._id || blog.id}
+              className="p-4 border rounded-lg shadow hover:shadow-lg transition relative bg-white"
+            >
+              {blog.image && (
+                <img
+                  src={blog.image}
+                  alt={blog.title}
+                  className="w-full h-40 object-cover rounded mb-3"
+                />
+              )}
+              <h4 className="font-bold text-lg mb-2">{blog.title}</h4>
+              <p className="text-gray-600 text-sm mb-3">
+                {blog.content.substring(0, 100)}...
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleEdit(blog)}
+                  className="flex-1 px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(blog._id || blog.id)}
+                  className="flex-1 px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
