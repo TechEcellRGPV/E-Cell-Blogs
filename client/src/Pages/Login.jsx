@@ -22,7 +22,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-900">
-      <div className="bg-slate-800 p-8 rounded-xl shadow-lg w-full max-w-md -mt-10">
+      <div className="bg-slate-800 p-8 rounded-xl shadow-lg w-full max-w-md -mt-20">
         <h2 className="text-2xl font-bold text-white mb-6 text-center">
           Login
         </h2>
@@ -34,7 +34,7 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="w-full px-4 py-2 rounded-lg bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 rounded-lg bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
               required
             />
           </div>
@@ -45,7 +45,7 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              className="w-full px-4 py-2 rounded-lg bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 rounded-lg bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
               required
             />
           </div>
