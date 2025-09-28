@@ -1,5 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import Link from "@tiptap/extension-link";
+import Toolbar from "./Toolbar";
 import { createBlog, updateBlog } from "../api/blogs";
 
 export default function AddBlogForm({ onBlogCreated, editBlog }) {
@@ -13,6 +18,22 @@ export default function AddBlogForm({ onBlogCreated, editBlog }) {
 
   const [errors, setErrors] = useState({});
 
+  // ✅ Editor setup
+  const editor = useEditor({
+    extensions: [
+      StarterKit, // includes bold, italic, strike, headings, lists, blockquote, codeBlock
+      Underline, // adds underline support
+      Link.configure({ openOnClick: false }), // link support
+    ],
+    content: formData.content || "",
+    onUpdate: ({ editor }) =>
+      setFormData((prev) => ({ ...prev, content: editor.getHTML() })),
+  });
+
+  useEffect(() => {
+    if (editBlog && editor) editor.commands.setContent(editBlog.content || "");
+  }, [editBlog, editor]);
+
   useEffect(() => {
     if (editBlog) {
       setFormData({
@@ -25,15 +46,6 @@ export default function AddBlogForm({ onBlogCreated, editBlog }) {
       setErrors({});
     }
   }, [editBlog]);
-
-  const validate = () => {
-    const errs = {};
-    if (!formData.title.trim()) errs.title = "Title is required";
-    if (!formData.content.trim()) errs.content = "Content is required";
-    if (!formData.tags.trim()) errs.tags = "At least one tag is required";
-    setErrors(errs);
-    return Object.keys(errs).length === 0;
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,12 +61,13 @@ export default function AddBlogForm({ onBlogCreated, editBlog }) {
     }));
   };
 
-  const removeTag = (tagToRemove) => {
-    const tagsArray = formData.tags
-      .split(",")
-      .map((t) => t.trim())
-      .filter((t) => t && t !== tagToRemove);
-    setFormData((prev) => ({ ...prev, tags: tagsArray.join(", ") }));
+  const validate = () => {
+    const errs = {};
+    if (!formData.title.trim()) errs.title = "Title is required";
+    if (!formData.content.trim()) errs.content = "Content is required";
+    if (!formData.tags.trim()) errs.tags = "At least one tag is required";
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
   };
 
   const handleSubmit = async (e) => {
@@ -65,7 +78,6 @@ export default function AddBlogForm({ onBlogCreated, editBlog }) {
       const data = new FormData();
       data.append("title", formData.title);
       data.append("content", formData.content);
-
       formData.tags
         .split(",")
         .forEach((tag) => data.append("tags", tag.trim()));
@@ -99,111 +111,100 @@ export default function AddBlogForm({ onBlogCreated, editBlog }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 mb-6 p-6 border rounded-lg shadow-lg bg-gray-50"
+      className="space-y-6 mb-6 p-6 border border-slate-700 rounded-xl shadow-lg bg-slate-900 text-white"
     >
-      <h3 className="text-xl font-semibold text-gray-800">
+      <h3 className="text-2xl font-semibold">
         {editBlog ? "Edit Blog" : "Create New Blog"}
       </h3>
-
       {errors.submit && (
-        <div className="text-red-600 font-medium">{errors.submit}</div>
+        <div className="text-red-400 font-medium">{errors.submit}</div>
       )}
 
-      <div>
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          placeholder="Blog Title"
-          className={`w-full p-3 border rounded ${
-            errors.title ? "border-red-500" : "border-gray-300"
-          }`}
-        />
-        {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
-      </div>
+      <input
+        type="text"
+        name="title"
+        value={formData.title}
+        onChange={handleChange}
+        placeholder="Blog Title"
+        className={`w-full p-3 rounded-lg bg-slate-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400 ${
+          errors.title ? "border border-red-500" : "border border-slate-600"
+        }`}
+      />
+      {errors.title && <p className="text-red-400 text-sm">{errors.title}</p>}
 
-      <div>
-        <textarea
-          name="content"
-          value={formData.content}
-          onChange={handleChange}
-          rows="5"
-          placeholder="Blog Content"
-          className={`w-full p-3 border rounded ${
-            errors.content ? "border-red-500" : "border-gray-300"
-          }`}
+      <div className="border border-slate-700 rounded-lg p-2 bg-slate-800">
+        <Toolbar editor={editor} />
+        <EditorContent
+          editor={editor}
+          className="prose prose-sm prose-invert max-w-none min-h-[200px] leading-normal px-2 py-1 text-white"
         />
+
         {errors.content && (
-          <p className="text-red-500 text-sm">{errors.content}</p>
+          <p className="text-red-400 text-sm mt-1">{errors.content}</p>
         )}
       </div>
 
-      <div>
-        <input
-          type="text"
-          name="tags"
-          value={formData.tags}
-          onChange={handleChange}
-          placeholder="Tags (comma separated)"
-          className={`w-full p-3 border rounded ${
-            errors.tags ? "border-red-500" : "border-gray-300"
-          }`}
-        />
-        {errors.tags && <p className="text-red-500 text-sm">{errors.tags}</p>}
+      <input
+        type="text"
+        name="tags"
+        value={formData.tags}
+        onChange={handleChange}
+        placeholder="Tags (comma separated)"
+        className={`w-full p-3 rounded-lg bg-slate-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400 ${
+          errors.tags ? "border border-red-500" : "border border-slate-600"
+        }`}
+      />
+      {errors.tags && <p className="text-red-400 text-sm">{errors.tags}</p>}
 
-        {/* Tags preview */}
-        <div className="flex flex-wrap gap-2 mt-2">
-          {tagsArray.map((tag, i) => (
-            <div
-              key={i}
-              className="bg-blue-200 text-blue-800 px-2 py-1 rounded flex items-center gap-1"
+      <div className="flex flex-wrap gap-2 mt-2">
+        {tagsArray.map((tag, i) => (
+          <div
+            key={i}
+            className="bg-blue-900 text-blue-300 px-2 py-1 rounded-md flex items-center gap-1 text-sm"
+          >
+            <span>{tag}</span>
+            <button
+              type="button"
+              onClick={() =>
+                setFormData((prev) => ({
+                  ...prev,
+                  tags: prev.tags.replace(tag, "").replace(",,", ","),
+                }))
+              }
+              className="text-red-400 font-bold"
             >
-              <span>{tag}</span>
-              <button
-                type="button"
-                onClick={() => removeTag(tag)}
-                className="text-red-600 font-bold"
-              >
-                ×
-              </button>
-            </div>
-          ))}
-        </div>
+              ×
+            </button>
+          </div>
+        ))}
       </div>
 
-      <div>
-        <label
-          htmlFor="fileUpload"
-          className="block w-full p-3 border border-dashed rounded text-center cursor-pointer bg-gray-100 hover:bg-gray-200"
-        >
-          {formData.imageFile ? "Change Image" : "Upload Blog Image"}
-        </label>
-        <input
-          id="fileUpload"
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="hidden"
-        />
-        {formData.imagePreview && (
-          <div className="mt-3 flex justify-center">
-            <img
-              src={formData.imagePreview}
-              alt="Preview"
-              className="max-h-64 rounded-lg border shadow object-contain"
-            />
-          </div>
-        )}
-      </div>
+      <label
+        htmlFor="fileUpload"
+        className="block w-full p-3 border border-dashed border-slate-600 rounded-lg text-center cursor-pointer bg-slate-800 hover:bg-slate-700 transition"
+      >
+        {formData.imageFile ? "Change Image" : "Upload Blog Image"}
+      </label>
+      <input
+        id="fileUpload"
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        className="hidden"
+      />
+      {formData.imagePreview && (
+        <div className="mt-3 flex justify-center">
+          <img
+            src={formData.imagePreview}
+            alt="Preview"
+            className="max-h-64 rounded-lg border border-slate-600 shadow object-contain"
+          />
+        </div>
+      )}
 
       <button
         type="submit"
-        className={`w-full px-4 py-2 text-white rounded-lg ${
-          editBlog
-            ? "bg-yellow-600 hover:bg-yellow-700"
-            : "bg-green-600 hover:bg-green-700"
-        } transition`}
+        className="w-full px-4 py-2 text-white font-medium rounded-lg shadow bg-green-600 hover:bg-green-700 transition"
       >
         {editBlog ? "Update Blog" : "Publish Blog"}
       </button>
