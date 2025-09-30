@@ -66,9 +66,9 @@ export default function BlogDetail() {
   });
 
   return (
-    <div className="min-h-screen bg-[#0a0a2a] text-white px-6 md:px-20 py-10">
+    <div ref={topRef} className="min-h-screen bg-[#0a0a2a] text-white px-6 md:px-20 py-10">
       {/* Breadcrumb */}
-      <div ref={topRef} className="text-sm text-gray-400 mb-4">
+      <div  className="text-sm text-gray-400 mb-4">
               <Link to="https://ecellrgpv.com/" className="hover:underline">Home</Link> / 
               <Link to="/" className="hover:underline">Blog</Link> / {post.title}
             </div>
