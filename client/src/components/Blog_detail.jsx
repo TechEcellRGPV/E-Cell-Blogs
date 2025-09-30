@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchBlogs } from "../api/blogs.js";
 
@@ -6,6 +6,16 @@ export default function BlogDetail() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [sidebarBlogs, setSidebarBlogs] = useState([]);
+
+
+  const topRef = useRef(null);
+   useEffect(() => {
+    // Scroll to top of blog detail when the component mounts
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [post]);
+
 
   useEffect(() => {
     loadBlog();
@@ -59,36 +69,22 @@ export default function BlogDetail() {
     <div className="min-h-screen bg-[#0a0a2a] text-white px-6 md:px-20 py-10">
       {/* Breadcrumb */}
       <div className="text-sm text-gray-400 mb-4">
-        <Link to="/" className="hover:underline">
-          Home
-        </Link>{" "}
-        / Blog / {post.title}
-      </div>
+              <Link to="https://ecellrgpv.com/" className="hover:underline">Home</Link> / 
+              <Link to="/" className="hover:underline">Blog</Link> / {post.title}
+            </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Main Blog */}
-        <div className="lg:col-span-3 bg-[#1a1a3a] p-6 rounded-lg space-y-6">
+        <div ref={topRef} className="lg:col-span-3 bg-[#1a1a3a] p-6 rounded-lg space-y-6">
           <img
             src={post.image || "/placeholder.png"}
             alt={post.title}
-            className="w-full rounded-lg"
+            className="w-full h-64 md:h-96 object-cover rounded-lg"
           />
           <h1 className="text-3xl font-bold">{post.title}</h1>
           <p className="text-gray-400 text-sm">{formattedDate}</p>
 
-          {/* Tags */}
-          {tagsArray.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {tagsArray.map((tag, i) => (
-                <span
-                  key={i}
-                  className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
+         
 
           <div
             className="text-gray-200 leading-relaxed prose prose-invert max-w-none"
@@ -97,7 +93,7 @@ export default function BlogDetail() {
         </div>
 
         {/* Sidebar */}
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 flex flex-col gap-4">
           <div className="bg-[#10103a] p-4 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold mb-3">Latest Articles</h3>
             {sidebarBlogs.map((blog) => {
@@ -110,6 +106,7 @@ export default function BlogDetail() {
               });
 
               return (
+                <>
                 <Link
                   key={blog._id}
                   to={`/blog/${blog._id}`}
@@ -127,11 +124,34 @@ export default function BlogDetail() {
                     </div>
                   </div>
                 </Link>
+                </>
               );
             })}
+
+         
           </div>
+          <div className="bg-[#10103a] p-4 rounded-lg shadow-md">
+            <h3 className="text-lg font-semibold mb-3">Tags</h3>
+             {tagsArray.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {tagsArray.map((tag, i) => (
+                <span
+                  key={i}
+                  className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+
+    </div>
+          
         </div>
+        
       </div>
+      
     </div>
   );
 }
