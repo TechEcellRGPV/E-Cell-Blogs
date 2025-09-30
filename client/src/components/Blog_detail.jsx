@@ -68,14 +68,14 @@ export default function BlogDetail() {
   return (
     <div className="min-h-screen bg-[#0a0a2a] text-white px-6 md:px-20 py-10">
       {/* Breadcrumb */}
-      <div className="text-sm text-gray-400 mb-4">
+      <div ref={topRef} className="text-sm text-gray-400 mb-4">
               <Link to="https://ecellrgpv.com/" className="hover:underline">Home</Link> / 
               <Link to="/" className="hover:underline">Blog</Link> / {post.title}
             </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Main Blog */}
-        <div ref={topRef} className="lg:col-span-3 bg-[#1a1a3a] p-6 rounded-lg space-y-6">
+        <div  className="lg:col-span-3 bg-[#1a1a3a] p-6 rounded-lg space-y-6">
           <img
             src={post.image || "/placeholder.png"}
             alt={post.title}
