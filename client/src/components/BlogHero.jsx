@@ -33,7 +33,6 @@ export default function BlogHero() {
       {/* Latest Blogs Section */}
       <section className="bg-[#0a0a2a] text-white py-16">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-8">Latest Blogs</h2>
           <BlogGrid showAll={false} />
         </div>
       </section>

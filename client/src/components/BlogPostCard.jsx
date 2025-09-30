@@ -15,9 +15,11 @@ const BlogPostCard = ({ post }) => {
         })
       : "Unknown";
 
-  const tagsArray = Array.isArray(post.tags)
+  const tagArray = Array.isArray(post.tags)
     ? post.tags
     : post.tags?.split(",").map((t) => t.trim()) || [];
+
+  const tagsArray = tagArray.slice(0,3)
 
   const authorName = post.author?.name || "Unknown Author";
 
@@ -53,7 +55,7 @@ const BlogPostCard = ({ post }) => {
               ))}
             </div>
           )}
-        </div>
+        
 
         <div className="flex items-center justify-between mt-4">
           <div className="flex items-center">
@@ -74,6 +76,7 @@ const BlogPostCard = ({ post }) => {
           </div>
           <p className="text-gray-400 text-sm">{formattedDate}</p>
         </div>
+      </div>
       </div>
     </Link>
   );
