@@ -8,6 +8,7 @@ import Login from "./Pages/Login";
 import BlogsPage from "./components/BlogsPage";
 import AdminPanel from "./Pages/AdminPanel";
 import BlogDetail from "./components/Blog_detail";
+import "prosemirror-view/style/prosemirror.css";
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -16,18 +17,11 @@ const PrivateRoute = ({ children }) => {
 
 function App() {
   return (
-    <div className="main">
+    <div className="main min-h-screen bg-[#0a0a2a] text-white">
       <Header />
       <Routes>
-        <Route path="/Login" element={<Login />} />
-        <Route
-          path="/"
-          element={
-            <>
-              <BlogHero />
-            </>
-          }
-        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<BlogHero />} />
         <Route path="/blogs" element={<BlogsPage />} />
         <Route path="/blog/:id" element={<BlogDetail />} />
         <Route

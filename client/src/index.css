@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
-.main{
-  font-family: 'Varela Round', sans-serif;
+@plugin "@tailwindcss/typography";
+.main {
+  font-family: "Varela Round", sans-serif;
 }

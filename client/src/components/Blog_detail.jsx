@@ -90,7 +90,10 @@ export default function BlogDetail() {
             </div>
           )}
 
-          <div className="text-gray-200 leading-relaxed">{post.content}</div>
+          <div
+            className="text-gray-200 leading-relaxed prose prose-invert max-w-none"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          ></div>
         </div>
 
         {/* Sidebar */}

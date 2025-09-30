@@ -6,7 +6,7 @@ import AddBlogForm from "../components/BlogForm";
 export default function AdminPanel() {
   const [blogs, setBlogs] = useState([]);
   const [editBlog, setEditBlog] = useState(null);
-  const [notification, setNotification] = useState(null); // success/error messages
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     loadBlogs();
@@ -42,16 +42,16 @@ export default function AdminPanel() {
   const handleEdit = (blog) => setEditBlog(blog);
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">Admin Panel</h2>
+    <div className="p-6 max-w-6xl mx-auto bg-[#0a0a2a] min-h-screen text-white">
+      <h2 className="text-3xl font-bold mb-6">Admin Panel</h2>
 
       {/* Notification */}
       {notification && (
         <div
           className={`mb-4 p-3 rounded ${
             notification.type === "success"
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
+              ? "bg-green-900 text-green-300"
+              : "bg-red-900 text-red-300"
           }`}
         >
           {notification.message}
@@ -69,17 +69,15 @@ export default function AdminPanel() {
       />
 
       {/* Blog list */}
-      <h3 className="text-2xl font-semibold mb-4 mt-8 text-gray-700">
-        All Blogs
-      </h3>
+      <h3 className="text-2xl font-semibold mb-4 mt-8">All Blogs</h3>
       {blogs.length === 0 ? (
-        <p className="text-gray-500">No blogs available.</p>
+        <p className="text-gray-400">No blogs available.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {blogs.map((blog) => (
             <div
               key={blog._id || blog.id}
-              className="p-4 border rounded-lg shadow hover:shadow-lg transition relative bg-white"
+              className="p-4 border border-slate-700 rounded-lg shadow hover:shadow-lg transition relative bg-slate-900"
             >
               {blog.image && (
                 <img
@@ -89,13 +87,13 @@ export default function AdminPanel() {
                 />
               )}
               <h4 className="font-bold text-lg mb-2">{blog.title}</h4>
-              <p className="text-gray-600 text-sm mb-3">
+              <p className="text-gray-400 text-sm mb-3">
                 {blog.content.substring(0, 100)}...
               </p>
               <div className="flex gap-2">
                 <button
                   onClick={() => handleEdit(blog)}
-                  className="flex-1 px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
+                  className="flex-1 px-3 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition"
                 >
                   Edit
                 </button>
