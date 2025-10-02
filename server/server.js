@@ -11,10 +11,9 @@ const { errorHandler } = require("./src/middlewares/error.middleware.js");
 const app = express();
 
 const allowedOrigins = [
-  "http://localhost:5173", 
+  "http://localhost:5173",
   "https://ecellblogs.vercel.app",
-  "https://e-cell-blogs-1.vercel.app",
-  "https://blogs.ecellrgpv.com"
+  "https://blogs.ecellrgpv.com",
 ];
 
 app.use(
