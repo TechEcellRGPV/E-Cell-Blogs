@@ -23,7 +23,7 @@ export default function Header() {
             <img
               src="/EcellLogo.png"
               alt="E-Cell Logo"
-              className="w-45 h-38 object-contain text-white fill-white"
+              className="w-45 h-34 object-contain text-white fill-white"
             />
             </a>
           </div>
