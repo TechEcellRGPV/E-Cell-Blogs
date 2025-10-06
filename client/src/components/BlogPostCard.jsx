@@ -26,7 +26,7 @@ const BlogPostCard = ({ post }) => {
   return (
     <Link
       to={`/blog/${post._id}`}
-      className="group rounded-xl overflow-hidden shadow-lg transform transition-transform duration-300 hover:scale-105 md:h-[500px] flex flex-col"
+      className="group rounded-xl overflow-hidden shadow-lg transform transition-transform duration-300 hover:scale-105 md:min-h-[500px] flex flex-col"
     >
       {/* Image */}
       <div className="relative h-48">

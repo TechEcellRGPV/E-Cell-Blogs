@@ -7,7 +7,6 @@ export default function BlogDetail() {
   const [post, setPost] = useState(null);
   const [sidebarBlogs, setSidebarBlogs] = useState([]);
 
-
   const topRef = useRef(null);
    useEffect(() => {
     // Scroll to top of blog detail when the component mounts
@@ -15,7 +14,6 @@ export default function BlogDetail() {
       topRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [post]);
-
 
   useEffect(() => {
     loadBlog();
@@ -93,8 +91,27 @@ export default function BlogDetail() {
         </div>
 
         {/* Sidebar */}
+        {/* Apply flex-col and order classes to control element display order */}
         <div className="lg:col-span-1 flex flex-col gap-4">
-          <div className="bg-[#10103a] p-4 rounded-lg shadow-md">
+          {/* Tags section - default order 1 (appears first), lg:order-2 (appears second on large screens) */}
+          <div className="bg-[#10103a] p-4 rounded-lg shadow-md order-1 lg:order-2"> {/* Added order classes */}
+            <h3 className="text-lg font-semibold mb-3">Tags</h3>
+             {tagsArray.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {tagsArray.map((tag, i) => (
+                <span
+                  key={i}
+                  className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+          </div>
+
+          {/* Latest Articles section - default order 2 (appears second), lg:order-1 (appears first on large screens) */}
+          <div className="bg-[#10103a] p-4 rounded-lg shadow-md order-2 lg:order-1"> {/* Added order classes */}
             <h3 className="text-lg font-semibold mb-3">Latest Articles</h3>
             {sidebarBlogs.map((blog) => {
               const blogDate = new Date(
@@ -127,26 +144,7 @@ export default function BlogDetail() {
                 </>
               );
             })}
-
-         
           </div>
-          <div className="bg-[#10103a] p-4 rounded-lg shadow-md">
-            <h3 className="text-lg font-semibold mb-3">Tags</h3>
-             {tagsArray.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {tagsArray.map((tag, i) => (
-                <span
-                  key={i}
-                  className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-
-
-    </div>
           
         </div>
         
